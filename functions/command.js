@@ -3,7 +3,24 @@
 // ===================================================================
 
 const search = require("search-this");
+const { translate: ts } = require('bing-translate-api');
 
+
+async function translate(text, from = 'auto-detect', to = 'en') {
+  const correctAble = [
+    'da', 'en', 'nl', 'fi', 'fr', 'fr-CA',
+    'de', 'it', 'ja', 'ko', 'no', 'pl', 'pt', 'pt-PT',
+    'ru', 'es', 'sv', 'tr', 'zh-Hant', 'zh-Hans'
+  ];
+
+  const response = await ts(text, from, to, correctAble.includes(from)).then((response) => {
+    return response;
+  }).catch((error) => {
+    console.error(error);
+  });
+
+  return response;
+}
 
 async function pfp(user) {
   if (user.avatar != null) {
@@ -39,5 +56,5 @@ async function doGoogle(interaction, text, site, ephemeral) {
 
 
 module.exports = {
-  pfp, doGoogle
+  translate, pfp, doGoogle
 };

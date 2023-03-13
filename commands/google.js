@@ -5,10 +5,10 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('google')
 		.setDescription(
-			'Find anything with google search.'
+			'Find anything with google search'
 		).addStringOption((option) =>
 			option.setName('text')
-				.setDescription('Search text..')
+				.setDescription('Search text')
         .setRequired(true)
     ).addStringOption((option) =>
 			option.setName('site')

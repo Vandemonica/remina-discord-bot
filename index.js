@@ -3,8 +3,8 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { findWord } = require('./functions/utility.js');
-const { pfp, doGoogle } = require('./functions/command.js');
+const { findWord, cardTranslate } = require('./functions/utility.js');
+const { translate, pfp, doGoogle } = require('./functions/command.js');
 
 
 const client = new Client({
@@ -54,6 +54,13 @@ client.on(Events.MessageCreate, async (interaction) => {
 			const repliedMessage = await interaction.fetchReference();
 
 			await doGoogle(interaction, repliedMessage.content, null, false);
+		} else if (findWord('translate', messages)) {
+			const repliedMessage = await interaction.fetchReference();
+
+			const response = await translate(repliedMessage.content);
+			const embed = cardTranslate(response);
+
+			await interaction.reply({ embeds: embed });
 		}
 	}
 });

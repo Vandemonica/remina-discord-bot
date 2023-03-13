@@ -5,7 +5,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('pfp')
 		.setDescription(
-			'Grab your or other user profile pictures.'
+			'Grab your or other user profile pictures'
 		).addUserOption((option) =>
 			option.setName('target')
 				.setDescription('Select target user')
@@ -18,6 +18,7 @@ module.exports = {
 	async execute(interaction) {
 		const target = await interaction.options.getUser('target');
 		const isPrivate = await interaction.options.getBoolean('private');
+
 		const result = await pfp(target != null ? target : interaction.user);
 
 		await interaction.reply({ content: result, ephemeral: isPrivate });
