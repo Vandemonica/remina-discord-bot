@@ -1,5 +1,5 @@
-const search = require("search-this");
 const { SlashCommandBuilder } = require('discord.js');
+const { doGoogle } = require('../functions/command.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,9 +14,9 @@ module.exports = {
 			option.setName('site')
 				.setDescription('The specific target site')
         .setRequired(false)
-    ).addBooleanOption(option =>
+    ).addBooleanOption((option) =>
       option.setName('private')
-        .setDescription('Hide search result to other user')
+        .setDescription('Display command result for everyone')
         .setRequired(false)
     ),
 	async execute(interaction) {
@@ -24,13 +24,7 @@ module.exports = {
     const site = await interaction.options.getString('site');
     const isPrivate = await interaction.options.getBoolean('private');
 
-		const response = await search(`${text}${site != null ? ' site:' + site : ''}`);
-
-    await interaction.reply({ content: response.results[0].link, ephemeral: isPrivate });
-
-    response.results.slice(1, 4).forEach(async (item) => {
-      await interaction.followUp({ content: item.link, ephemeral: isPrivate });
-    });
+    await doGoogle(interaction, text, site, isPrivate);
 	},
 };
 

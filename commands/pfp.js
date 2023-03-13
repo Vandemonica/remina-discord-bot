@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { pfp } = require('../functions/command.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -9,15 +10,16 @@ module.exports = {
 			option.setName('target')
 				.setDescription('Select target user')
 				.setRequired(false)
-		),
+		).addBooleanOption((option) =>
+      option.setName('private')
+        .setDescription('Display command result for everyone')
+        .setRequired(false)
+    ),
 	async execute(interaction) {
 		const target = await interaction.options.getUser('target');
-		const user = target != null ? target : interaction.user;
+		const isPrivate = await interaction.options.getBoolean('private');
+		const result = await pfp(target != null ? target : interaction.user);
 
-		if (user.avatar != null) {
-			await interaction.reply(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`);
-		} else {
-			await interaction.reply(user.displayAvatarURL());
-		}
+		await interaction.reply({ content: result, ephemeral: isPrivate });
 	},
 };

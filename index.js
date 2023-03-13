@@ -3,9 +3,18 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { findWord } = require('./functions/utility.js');
+const { pfp, doGoogle } = require('./functions/command.js');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.MessageContent
+	] 
+});
 
 client.commands = new Collection();
 
@@ -21,6 +30,7 @@ for (const file of commandFiles) {
 	}
 }
 
+
 client.on(Events.InteractionCreate, async (interaction) => {
 	if (!interaction.isChatInputCommand()) {
 		return false;
@@ -31,8 +41,25 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	await command.execute(interaction);
 });
 
-client.once(Events.ClientReady, (context) => {
-	console.log(`Logged in as: ${context.user.tag}`);
+client.on(Events.MessageCreate, async (interaction) => {
+	if (interaction.mentions.has(client.user)) {
+		const messages = interaction.content.split('> ')[1];
+		const mentions = interaction.mentions;
+
+		if (findWord('pfp', messages)) {
+			const results = await pfp(mentions.repliedUser);
+			await interaction.channel.send(results);
+
+		} else if (findWord('google', messages)) {
+			const repliedMessage = await interaction.fetchReference();
+
+			await doGoogle(interaction, repliedMessage.content, null, false);
+		}
+	}
+});
+
+client.once(Events.ClientReady, (interaction) => {
+	console.log(`Logged in as: ${interaction.user.tag}`);
 });
 
 
