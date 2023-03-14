@@ -10,7 +10,7 @@
 
 ### How to Setup on your devices
 1. Clone this repository
-2. Setup your [here](https://discord.com/login?redirect_to=%2Fdevelopers%2Fapplications)
+2. Setup your Discord bot [here](https://discord.com/login?redirect_to=%2Fdevelopers%2Fapplications)
 3. Install the dependencies by running `npm run install`
 4. Run the bot with `npm run init` on your first activation or `npm run start` after the first activation
 
