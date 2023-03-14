@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
 const { findWord, cardTranslate } = require('./functions/utility.js');
 const { translate, pfp, doGoogle } = require('./functions/command.js');
 
@@ -66,7 +66,12 @@ client.on(Events.MessageCreate, async (interaction) => {
 });
 
 client.once(Events.ClientReady, (interaction) => {
-	console.log(`Logged in as: ${interaction.user.tag}`);
+	console.log(`${interaction.user.tag} is online, put the lights on!`);
+
+	client.user.setPresence({
+		activities: [{ name: `over humanity`, type: ActivityType.Watching }],
+		status: 'online',
+	});
 });
 
 
