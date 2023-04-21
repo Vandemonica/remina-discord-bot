@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { SlashCommandBuilder, Integration } = require('discord.js');
 const { doGoogle } = require('../functions/command.js');
 
@@ -28,13 +30,13 @@ module.exports = {
         { name: '\u200B', value: '\u200B' },
         {
           name: 'Sources Code',
-          value: 'https://github.com/Vandemonica/remina-discord-bot',
+          value: process.env.OWNER_GITHUB_URL,
         }
       ],
       timestamp: new Date().toISOString(),
       footer: {
-        text: 'Remina discord bot by Vandemonica',
-        icon_url: 'https://avatars.githubusercontent.com/u/66208743',
+        text: `${process.env.BOT_NAME} by ${process.env.OWNER_GITHUB_NAME}`,
+        icon_url: process.env.OWNER_GITHUB_AVATAR,
       }
     };
 
