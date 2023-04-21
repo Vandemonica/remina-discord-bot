@@ -19,8 +19,6 @@ module.exports = {
 		const target = await interaction.options.getUser('target');
 		const isPrivate = await interaction.options.getBoolean('private');
 
-		const result = await pfp(target != null ? target : interaction.user);
-
-		await interaction.reply({ content: result, ephemeral: isPrivate });
+		await pfp(interaction, target != null ? target : interaction.user, isPrivate);
 	},
 };

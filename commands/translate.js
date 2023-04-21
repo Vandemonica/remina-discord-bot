@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { translate } = require('../functions/command.js');
-const { cardTranslate } = require('../functions/utility.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -54,9 +53,6 @@ module.exports = {
     const to = await interaction.options.getString('to') ?? 'en';
     const isPrivate = await interaction.options.getBoolean('private');
 
-    const response = await translate(text, from, to);
-    const embed = cardTranslate(response);
-
-		await interaction.reply({ embeds: embed, ephemeral: isPrivate });
+    await translate(interaction, text, from, to, isPrivate);
 	},
 };

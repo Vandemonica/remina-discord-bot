@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
 const { findWord, cardTranslate } = require('./functions/utility.js');
-const { translate, pfp, doGoogle } = require('./functions/command.js');
+const { translate, pfp, google } = require('./functions/command.js');
 
 
 const client = new Client({
@@ -46,21 +46,19 @@ client.on(Events.MessageCreate, async (interaction) => {
 		const messages = interaction.content.split('> ')[1];
 		const mentions = interaction.mentions;
 
+		if (mentions.repliedUser == null) {
+			await interaction.reply("You must reply on a message to use quick commands!");
+			return;
+		};
+
+
 		if (findWord('pfp', messages)) {
-			const results = await pfp(mentions.repliedUser);
-			await interaction.channel.send(results);
+			await pfp(interaction, mentions.repliedUser);
 
-		} else if (findWord('google', messages)) {
-			const repliedMessage = await interaction.fetchReference();
-
-			await doGoogle(interaction, repliedMessage.content, null, false);
 		} else if (findWord('translate', messages)) {
 			const repliedMessage = await interaction.fetchReference();
+			await translate(interaction, repliedMessage.content);
 
-			const response = await translate(repliedMessage.content);
-			const embed = cardTranslate(response);
-
-			await interaction.reply({ embeds: embed });
 		}
 	}
 });

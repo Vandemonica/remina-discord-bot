@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const { SlashCommandBuilder, Integration } = require('discord.js');
-const { doGoogle } = require('../functions/command.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -24,7 +23,6 @@ module.exports = {
       title: 'About me',
       description: "Random discord bot with random features, Reply messages and mention me for quick command.\n\nBelow are supported slash (/) command:",
       fields: [
-        { name: 'google', value: 'Google search anything you want', inline: true },
         { name: 'pfp', value: 'Grab your or replied user profile pictures', inline: true },
         { name: 'translate', value: 'Translate text from/to another language', inline: true },
         { name: '\u200B', value: '\u200B' },

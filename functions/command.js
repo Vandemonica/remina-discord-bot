@@ -2,11 +2,14 @@
 // ====================== Command Function ===========================
 // ===================================================================
 
-const search = require("search-this");
+const { cardTranslate } = require('./utility.js');
+
 const { translate: ts } = require('bing-translate-api');
 
 
-async function translate(text, from = 'auto-detect', to = 'en') {
+// Bing Translate
+// ===============================================
+async function translate(interaction, text, from = 'auto-detect', to = 'en', ephemeral = false) {
   const correctAble = [
     'da', 'en', 'nl', 'fi', 'fr', 'fr-CA',
     'de', 'it', 'ja', 'ko', 'no', 'pl', 'pt', 'pt-PT',
@@ -19,42 +22,25 @@ async function translate(text, from = 'auto-detect', to = 'en') {
     console.error(error);
   });
 
-  return response;
+  const results = cardTranslate(response);
+
+  await interaction.reply({ embeds: results, ephemeral: ephemeral });
 }
 
-async function pfp(user) {
+// Profile Pic Grabber
+// ===============================================
+async function pfp(interaction, user, ephemeral = false) {
+  let avatar = user.displayAvatarURL();
+
   if (user.avatar != null) {
-    return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`;
+    avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`;
   }
 
-  return user.displayAvatarURL();
+  await interaction.reply({ content: avatar, ephemeral: ephemeral });
 }
 
-
-// ===========================================================================
-
-async function doGoogle(interaction, text, site, ephemeral) {
-  try {
-    const response = await search(`${text}${site != null ? ' site:' + site : ''}`);
-
-    await interaction.reply({ content: response.results[0].link, ephemeral: ephemeral });
-
-    response.results.slice(1, 4).forEach(async (item) => {
-      const context = { content: item.link, ephemeral: ephemeral };
-
-      if (typeof interaction.followUp !== 'undefined') {
-        await interaction.followUp(context);
-      } else {
-        await interaction.reply(context);
-      }
-    });
-
-  } catch (error) {
-    await interaction.reply("Couldn't reach Google API, please try again later");
-  }
-}
 
 
 module.exports = {
-  translate, pfp, doGoogle
+  translate, pfp
 };
