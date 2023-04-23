@@ -3,7 +3,6 @@
 ## Packages & Libraries
 - [Discord.js](https://discordjs.guide/)
 - [Bing Translate API](https://www.npmjs.com/package/bing-translate-api)
-- [Search-This](https://www.npmjs.com/package/search-this)
 - [Currency Converter LT](https://www.npmjs.com/package/currency-converter-lt)
 
 * * *

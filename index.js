@@ -3,8 +3,8 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
-const { findWord, cardTranslate } = require('./functions/utility.js');
-const { translate, pfp, google } = require('./functions/command.js');
+const { findWord } = require('./functions/utility.js');
+const { translate, pfp, currency } = require('./functions/command.js');
 
 
 const client = new Client({
@@ -39,6 +39,23 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	const command = interaction.client.commands.get(interaction.commandName);
 
 	await command.execute(interaction);
+});
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (interaction.isAutocomplete()) {
+		const command = interaction.client.commands.get(interaction.commandName);
+
+		if (!command) {
+			console.error(`No command matching ${interaction.commandName} was found.`);
+			return;
+		}
+
+		try {
+			await command.autocomplete(interaction);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 });
 
 client.on(Events.MessageCreate, async (interaction) => {
