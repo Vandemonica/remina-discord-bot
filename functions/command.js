@@ -62,8 +62,6 @@ async function translate(interaction, text, from = 'auto-detect', to = 'en', eph
     }
   }
 
-  console.log(fields);
-
   const results = cardBasic('Translate Text', fields, icon);
 
   const redirectButton = new ButtonBuilder()

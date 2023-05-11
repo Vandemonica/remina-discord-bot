@@ -4,8 +4,9 @@
   "description": "Random discord-bot with its random functionality",
   "main": "index.js",
   "scripts": {
-    "init": "node deploy-commands.js && node index.js",
-    "start": "node index.js"
+    "init": "node deploy-commands.js",
+    "dev": "node index.js",
+    "start": "node deploy-commands.js && node index.js"
   },
   "repository": {
     "type": "git",

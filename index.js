@@ -59,7 +59,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on(Events.MessageCreate, async (interaction) => {
-	if (interaction.mentions.has(client.user)) {
+	if (interaction.mentions.has(client.user) && interaction.mentions.everyone === false) {
 		const messages = interaction.content.split('> ')[1];
 		const mentions = interaction.mentions;
 
